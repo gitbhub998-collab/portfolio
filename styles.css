@@ -2207,3 +2207,512 @@ body.scrolled .topbar {
     padding-bottom: 16px;
   }
 }
+
+/* ===== v10: language toggle, entrance, split-text, timeline, float preview, RTL ===== */
+
+html.lenis-on {
+  scroll-behavior: auto;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-toggle {
+  display: inline-grid;
+  min-width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 55%);
+  border-radius: 999px;
+  padding: 0 16px;
+  background: rgb(12 25 43 / 30%);
+  color: var(--white);
+  font: 600 13px var(--body);
+  transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.lang-toggle:hover {
+  transform: translateY(-2px);
+  border-color: var(--amber);
+  background: var(--amber);
+  color: var(--navy-deep);
+}
+
+/* Hero entrance */
+.hero .eyebrow { --ed: .1s; }
+.hero .hero-sub { --ed: .65s; }
+.hero .hero-side-note { --ed: .8s; }
+.hero .scroll-cue { --ed: .9s; }
+
+body.js-anim:not(.ready) .hero .anim {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+body.js-anim.ready .hero .anim {
+  transition: opacity .7s ease var(--ed, 0s), transform .9s var(--ease) var(--ed, 0s);
+}
+
+.hero h1 {
+  overflow: hidden;
+  padding-bottom: .07em;
+  margin-bottom: -.07em;
+}
+
+body.js-anim:not(.ready) .hero h1 > span {
+  opacity: 0;
+  transform: translateY(108%);
+}
+
+body.js-anim.ready .hero h1 > span {
+  transition: transform 1s var(--ease) .2s, opacity .55s ease .2s;
+}
+
+body.js-anim.ready .hero h1 > span:last-child {
+  transition-delay: .3s;
+}
+
+body.js-anim:not(.ready) .hero-rule {
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+html[dir=rtl] body.js-anim:not(.ready) .hero-rule {
+  transform-origin: right;
+}
+
+body.js-anim.ready .hero-rule {
+  transition: opacity .6s ease .55s, transform 1s var(--ease) .55s;
+}
+
+body.js-anim:not(.ready) .hero-portrait {
+  clip-path: inset(100% 0 0 0);
+}
+
+body.js-anim.ready .hero-portrait {
+  transition: clip-path 1.15s var(--ease) .45s;
+}
+
+body.js-anim:not(.ready) .portrait-halo,
+body.js-anim:not(.ready) .portrait-tag {
+  opacity: 0;
+}
+
+body.js-anim.ready .portrait-halo,
+body.js-anim.ready .portrait-tag {
+  transition: opacity .8s ease .9s;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.13); }
+  to { transform: scale(1); }
+}
+
+body.js-anim .hero-video {
+  animation: heroZoom 3.4s var(--ease) .1s backwards;
+}
+
+/* Split-text display titles */
+.display-title.split {
+  opacity: 1;
+  transform: none;
+}
+
+.st-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: .1em;
+  margin-bottom: -.1em;
+}
+
+.st-i {
+  display: inline-block;
+  transform: translateY(118%);
+  transition: transform .85s var(--ease) calc(var(--i) * 75ms);
+}
+
+.revealed .st-i {
+  transform: translateY(0);
+}
+
+/* Experience timeline */
+.experience-list {
+  position: relative;
+  padding-inline-start: 30px;
+}
+
+.timeline-line {
+  position: absolute;
+  inset-inline-start: 8px;
+  top: 26px;
+  bottom: 26px;
+  width: 2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.timeline-line i {
+  display: block;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(var(--amber-light), var(--amber));
+}
+
+.experience-list article {
+  position: relative;
+}
+
+.experience-list article::before {
+  position: absolute;
+  inset-inline-start: -27px;
+  top: 33px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgb(183 138 73 / 15%);
+  content: "";
+}
+
+/* Cursor-follow project preview */
+.work-float {
+  position: fixed;
+  z-index: 90;
+  top: 0;
+  left: 0;
+  width: min(350px, 30vw);
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 14px;
+  background: var(--navy-deep);
+  box-shadow: 0 26px 64px rgb(6 15 27 / 34%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+
+.work-float.on {
+  opacity: 1;
+}
+
+.work-float img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Menu link stagger */
+.menu-panel nav a {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .22s ease, transform .22s ease, color .2s ease, padding .25s ease;
+}
+
+.menu-panel.open nav a {
+  opacity: 1;
+  transform: none;
+  transition: opacity .5s ease calc(.14s + var(--mi, 0) * .055s), transform .5s var(--ease) calc(.14s + var(--mi, 0) * .055s), color .2s ease, padding .25s ease;
+}
+
+/* Services accordion: grid-rows technique */
+.service-body {
+  display: grid;
+  max-height: none;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .45s var(--ease), padding .4s var(--ease);
+}
+
+.service-body-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.service-item.active .service-body {
+  max-height: none;
+  grid-template-rows: 1fr;
+}
+
+/* Submit success morph */
+.request-submit.sent {
+  border-color: #3f9d63;
+  background: #3f9d63;
+  color: #fff;
+}
+
+/* Mobile hero: kill the rotated tag that collides with the side note */
+@media (max-width: 760px) {
+  .portrait-tag {
+    display: none;
+  }
+
+  .hero-side-note {
+    max-width: 52%;
+  }
+
+  .lang-toggle {
+    min-width: 44px;
+    height: 44px;
+    padding: 0 13px;
+    font-size: 12px;
+  }
+
+  .work-float {
+    display: none;
+  }
+
+  .experience-list {
+    padding-inline-start: 24px;
+  }
+
+  .timeline-line {
+    inset-inline-start: 6px;
+  }
+
+  .experience-list article::before {
+    inset-inline-start: -23px;
+  }
+}
+
+/* ===== Arabic / RTL ===== */
+html[lang=ar] {
+  --heading: "Cairo", "IBM Plex Sans Arabic", "Space Grotesk", sans-serif;
+  --mono: "IBM Plex Sans Arabic", "IBM Plex Mono", monospace;
+  --body: "IBM Plex Sans Arabic", "Manrope", sans-serif;
+}
+
+html[lang=ar] .display-title,
+html[lang=ar] .hero h1,
+html[lang=ar] .loader-brand,
+html[lang=ar] .menu-panel nav a,
+html[lang=ar] .footer-request h2,
+html[lang=ar] .contact-lead,
+html[lang=ar] .service-intro,
+html[lang=ar] .service-head h3,
+html[lang=ar] .journey-list h3,
+html[lang=ar] .work-row h3,
+html[lang=ar] .skill-row strong,
+html[lang=ar] .about-text .about-lead {
+  letter-spacing: 0;
+}
+
+html[lang=ar] .eyebrow,
+html[lang=ar] .hero-sub,
+html[lang=ar] .section-head,
+html[lang=ar] .top-meta,
+html[lang=ar] .hero-side-note,
+html[lang=ar] .scroll-cue,
+html[lang=ar] .portrait-tag,
+html[lang=ar] .about-facts div,
+html[lang=ar] .service-head > span,
+html[lang=ar] .request-field label,
+html[lang=ar] .contact-item small,
+html[lang=ar] .menu-panel-top,
+html[lang=ar] .menu-bottom > div > span,
+html[lang=ar] .work-row small {
+  letter-spacing: .02em;
+}
+
+html[lang=ar] .display-title {
+  line-height: 1.1;
+}
+
+html[lang=ar] .hero h1 {
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+html[lang=ar] .loader-brand {
+  font-size: clamp(34px, 7vw, 56px);
+}
+
+html[lang=ar] .lang-toggle {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+html[dir=rtl] .menu-panel-content {
+  inset: 0 0 0 auto;
+  box-shadow: -24px 0 70px rgb(0 0 0 / 28%);
+  transform: translateX(102%);
+}
+
+html[dir=rtl] .menu-panel.open .menu-panel-content {
+  transform: translateX(0);
+}
+
+html[dir=rtl] .menu-panel nav a:hover,
+html[dir=rtl] .menu-panel nav a.is-current {
+  padding-left: 0;
+  padding-right: 7px;
+}
+
+html[dir=rtl] .menu-panel nav a > svg {
+  transform: scaleX(-1) translateX(-5px);
+}
+
+html[dir=rtl] .menu-panel nav a:hover > svg,
+html[dir=rtl] .menu-panel nav a.is-current > svg {
+  transform: scaleX(-1) translateX(0);
+}
+
+html[dir=rtl] .menu-bottom a svg {
+  margin-left: 0;
+  margin-right: 3px;
+}
+
+html[dir=rtl] .hero h1 span:last-child {
+  margin-left: 0;
+  margin-right: clamp(18px, 5vw, 70px);
+}
+
+html[dir=rtl] .hero-rule {
+  background: linear-gradient(270deg, var(--amber-light), rgb(223 193 138 / 12%));
+}
+
+html[dir=rtl] .hero-watermark {
+  right: auto;
+  left: 3%;
+}
+
+html[dir=rtl] .hero-watermark-text {
+  right: auto;
+  left: 6%;
+  text-align: left;
+}
+
+html[dir=rtl] .hero-side-note {
+  right: auto;
+  left: clamp(24px, 5vw, 72px);
+  text-align: left;
+}
+
+html[dir=rtl] .scroll-cue {
+  left: auto;
+  right: clamp(24px, 5vw, 72px);
+}
+
+html[dir=rtl] .scroll-line {
+  transform-origin: right;
+}
+
+html[dir=rtl] .portrait-tag {
+  right: auto;
+  left: 0;
+  transform: rotate(90deg);
+  transform-origin: left bottom;
+}
+
+html[dir=rtl] .service-head {
+  text-align: right;
+}
+
+html[dir=rtl] .service-body {
+  padding: 0 60px 0 30px;
+}
+
+html[dir=rtl] .about-text {
+  padding: clamp(18px, 3vw, 42px) 0 20px clamp(14px, 3vw, 38px);
+}
+
+html[dir=rtl] .about-image-wrap > span {
+  left: auto;
+  right: 14px;
+}
+
+html[dir=rtl] .about-facts b {
+  text-align: left;
+}
+
+html[dir=rtl] .skill-row small {
+  text-align: left;
+}
+
+html[dir=rtl] .work-row .arrow {
+  transform: scaleX(-1);
+}
+
+html[dir=rtl] .work-row:hover .arrow {
+  transform: scaleX(-1) translate(3px, -3px);
+}
+
+html[dir=rtl] .contact-item,
+html[dir=rtl] .contact-item:nth-child(3n),
+html[dir=rtl] .contact-item:nth-child(2n) {
+  border-right: 0;
+  border-left: 1px solid rgb(255 255 255 / 14%);
+  padding: 22px 0 20px 20px;
+}
+
+html[dir=rtl] .contact-item:nth-child(2n) {
+  border-left: 0;
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+html[dir=rtl] .contact-orbit {
+  right: auto;
+  left: -19vw;
+}
+
+html[dir=rtl] .request-field input:not([dir=ltr]),
+html[dir=rtl] .request-field textarea {
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  html[dir=rtl] .hero-side-note {
+    right: auto;
+    left: 6vw;
+  }
+
+  html[dir=rtl] .scroll-cue {
+    left: auto;
+    right: 6vw;
+  }
+
+  html[dir=rtl] .hero h1 span:last-child {
+    margin-right: clamp(12px, 7vw, 28px);
+  }
+
+  html[dir=rtl] .service-body {
+    padding-right: 41px;
+    padding-left: 6px;
+  }
+
+  html[dir=rtl] .contact-item,
+  html[dir=rtl] .contact-item:nth-child(3n),
+  html[dir=rtl] .contact-item:nth-child(2n) {
+    border-left: 0;
+    padding: 17px 0;
+  }
+
+  html[dir=rtl] .skill-row small {
+    text-align: right;
+  }
+
+  html[dir=rtl] .footer-year {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  html[dir=rtl] .footer-role {
+    text-align: right;
+  }
+}
+
+/* v10 fixes */
+.hero-portrait-wrap picture {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: center;
+}
