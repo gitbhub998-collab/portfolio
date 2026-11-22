@@ -52,7 +52,7 @@ en:{
  'form.name':'NAME','form.phone':'PHONE','form.phoneph':'+20 1...','form.email':'EMAIL','form.message':'HOW CAN I HELP?','form.submit':'SEND REQUEST',
  'form.sending':'SENDING YOUR REQUEST...','form.connError':'Unable to connect. Please try again in a moment.','form.processError':'The request could not be processed. Please try again later.',
  'form.success':'Your request was sent successfully. Thank you!','form.sent':'SENT',
- 'footer.name':'Belal Mohamed','footer.role':'RAILWAY TECHNOLOGY STUDENT'
+ 'footer.name':'Belal Mohamed','footer.role':'RAILWAY TECHNOLOGY STUDENT','skills.title':'TECHNICAL SKILLS','skills.s1':'Rolling Stock','skills.s2':'Locomotive Maintenance','skills.s3':'Railway Signaling','skills.s4':'Track Engineering','skills.s5':'Traction Systems','skills.s6':'Project Appraisal','rail.home':'HOME','rail.services':'SERVICES','rail.about':'ABOUT','rail.experience':'EXPERIENCE','rail.work':'WORK','rail.journey':'EDUCATION','rail.contact':'CONTACT','rail.next':'NEXT STOP','rail.final':'FINAL STOP'
 },
 ar:{
  'loader.brand':'بلال محمد يسري','loader.label':'جارٍ التحميل',
@@ -103,7 +103,7 @@ ar:{
  'form.name':'الاسم','form.phone':'رقم الهاتف','form.phoneph':'+20 1...','form.email':'البريد الإلكتروني','form.message':'كيف يمكنني مساعدتك؟','form.submit':'إرسال الطلب',
  'form.sending':'جارٍ إرسال طلبك...','form.connError':'تعذر الاتصال. حاول مرة أخرى بعد قليل.','form.processError':'تعذر معالجة الطلب. حاول مرة أخرى لاحقاً.',
  'form.success':'تم إرسال طلبك بنجاح. شكراً لك!','form.sent':'تم الإرسال',
- 'footer.name':'بلال محمد','footer.role':'طالب تكنولوجيا سكك حديدية'
+ 'footer.name':'بلال محمد','footer.role':'طالب تكنولوجيا سكك حديدية','skills.title':'المهارات التقنية','skills.s1':'الوحدات المتحركة','skills.s2':'صيانة الجرارات','skills.s3':'إشارات السكك الحديدية','skills.s4':'هندسة القضبان','skills.s5':'أنظمة الجر','skills.s6':'تقييم المشروعات','rail.home':'الرئيسية','rail.services':'الخدمات','rail.about':'نبذة','rail.experience':'الخبرة','rail.work':'الأعمال','rail.journey':'التعليم','rail.contact':'التواصل','rail.next':'المحطة التالية','rail.final':'المحطة الأخيرة'
 }};
 
 let lang=localStorage.getItem('bm-lang')||'en';
@@ -124,6 +124,7 @@ function applyLang(next){
   if(lt) lt.textContent=ar?'EN':'عربي';
   document.body.classList.toggle('ar',ar);
   splitTitles();
+  if(window.__rail)window.__rail.relabel();
 }
 
 /* ---------------- split-text display titles ---------------- */
@@ -168,7 +169,7 @@ if(loader&&pct&&bar){
     const target=(done/tasks.length)*100;
     setP(displayed+(target-displayed)*.14+ .6);
     const elapsed=performance.now()-started;
-    if((done===tasks.length&&displayed>98)||elapsed>4500){
+    if((done===tasks.length&&displayed>98&&elapsed>2100)||elapsed>4500){
       finished=true;setP(100);
       setTimeout(()=>{
         loader.classList.add('is-hidden');
@@ -190,6 +191,7 @@ const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matche
 let lenis=null;
 if(window.Lenis&&!reducedMotion){
   lenis=new Lenis({duration:1.15,smoothWheel:true});
+  window.__lenis=lenis;
   document.documentElement.classList.add('lenis-on');
   const raf=time=>{lenis.raf(time);requestAnimationFrame(raf)};
   requestAnimationFrame(raf);
@@ -201,6 +203,7 @@ $$('a[href^="#"]').forEach(a=>{
     const target=document.querySelector(id);
     if(!target) return;
     e.preventDefault();
+    if(window.__wipeNav) return;
     if(lenis) lenis.scrollTo(target,{offset:-70});
     else target.scrollIntoView({behavior:reducedMotion?'auto':'smooth'});
   });
@@ -312,6 +315,114 @@ $$('.reveal').forEach((el,i)=>{el.style.transitionDelay=Math.min((i%5)*55,220)+'
 /* ---------------- hero entrance delays ---------------- */
 $$('.hero .anim').forEach(el=>{/* delays set via nth CSS */});
 
+
+/* ---------------- railbar: station-line progress ---------------- */
+const railStations=$('#railStations'), railTrain=$('#railTrain'), railLine=$('.rail-line');
+let railLineStart=14, railLineWidth=0;
+function measureRailLine(){
+  if(!railLine) return;
+  railLineStart=parseFloat(getComputedStyle(railLine).insetInlineStart)||14;
+  railLineWidth=railLine.offsetWidth;
+}
+const railIds=['home','services','about','experience','work','journey','contact'];
+let stationMeta=[];
+function buildRail(){
+  if(!railStations) return;
+  const scrollable=document.documentElement.scrollHeight-window.innerHeight;
+  measureRailLine();
+  railStations.innerHTML='';
+  stationMeta=[];
+  railIds.forEach(id=>{
+    const sec=document.getElementById(id);
+    if(!sec) return;
+    const p=scrollable>0?Math.min(Math.max((sec.offsetTop-60)/scrollable,0),1):0;
+    const d=document.createElement('i');
+    d.className='rail-station';
+    d.style.insetInlineStart=(p*100).toFixed(2)+'%';
+    railStations.appendChild(d);
+    stationMeta.push({el:d,p:p,id:id});
+  });
+}
+const railbarEl=$('.railbar');
+let railDest=$('#railDest');
+if(railbarEl&&!railDest){railDest=document.createElement('div');railDest.className='rail-dest';railDest.id='railDest';railbarEl.appendChild(railDest);}
+window.__rail={relabel:()=>{stationMeta.forEach(m=>{const sp=m.el.querySelector('span');if(sp)sp.textContent=tr('rail.'+m.id);});updateRailDest(lastP);}};
+let lastP=0;
+function updateRailDest(p){
+  if(!railDest||!stationMeta.length) return;
+  lastP=p;
+  let dest=null;
+  for(const m of stationMeta){if(m.p>p+0.002){dest=m;break;}}
+  railDest.textContent=dest
+    ?tr('rail.next')+' \u00b7 '+tr('rail.'+dest.id)
+    :tr('rail.final')+' \u00b7 '+tr('rail.'+stationMeta[stationMeta.length-1].id);
+}
+window.addEventListener('load',buildRail);
+window.addEventListener('resize',buildRail);
+buildRail();
+
+/* ---------------- split-flap departure-board loader ---------------- */
+const flapBoard=$('#flapBoard');
+if(flapBoard){
+  const flapText='BELAL MOHAMED';
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  flapBoard.innerHTML='';
+  const cells=[];
+  for(const ch of flapText){
+    const d=document.createElement('span');
+    if(ch===' '){d.className='flap gap';d.innerHTML='&nbsp;';}
+    else{d.className='flap';d.textContent='A';}
+    flapBoard.appendChild(d);
+    cells.push({el:d,target:ch});
+  }
+  if(reducedMotion){
+    cells.forEach(c=>{if(c.target!==' ')c.el.textContent=c.target;});
+  }else{
+    cells.forEach((c,i)=>{
+      if(c.target===' ')return;
+      c.el.classList.add('flipping');
+      const cyc=setInterval(()=>{c.el.textContent=chars[Math.floor(Math.random()*26)];},55);
+      setTimeout(()=>{clearInterval(cyc);c.el.textContent=c.target;c.el.classList.remove('flipping');c.el.classList.add('landed');},500+i*110);
+    });
+  }
+}
+
+/* ---------------- page wipe transitions (menu navigation) ---------------- */
+const pageWipe=$('#pageWipe');
+document.addEventListener('click',e=>{
+  const a=e.target&&e.target.closest?e.target.closest('.menu-panel nav a'):null;
+  if(!a) return;
+  const id=a.getAttribute('href');
+  const target=id&&id.length>1?document.querySelector(id):null;
+  if(!target) return;
+  e.preventDefault();
+  if(reducedMotion||!pageWipe) return;
+  window.__wipeNav=true;
+  setMenuState(false);
+  pageWipe.classList.add('active','in');
+  setTimeout(()=>{
+    if(lenis) lenis.scrollTo(target,{offset:-70,immediate:true});
+    else{
+      const de=document.documentElement, prevB=de.style.scrollBehavior;
+      de.style.scrollBehavior='auto';
+      window.scrollTo(0,target.getBoundingClientRect().top+window.scrollY-70);
+      de.style.scrollBehavior=prevB;
+    }
+    pageWipe.classList.remove('in');
+    pageWipe.classList.add('out');
+    setTimeout(()=>{pageWipe.classList.remove('active','out');window.__wipeNav=false;},640);
+  },520);
+},true);
+
+/* ---------------- skills matrix fill ---------------- */
+const skillsEl=$('.skills');
+if(skillsEl){
+  const so=new IntersectionObserver(es=>{
+    es.forEach(en=>{if(en.isIntersecting){skillsEl.classList.add('in');so.disconnect();}});
+  },{threshold:.3});
+  so.observe(skillsEl);
+}
+
 /* ---------------- scroll effects: topbar, progress, parallax, timeline ---------------- */
 const heroVideo=$('.hero-video'), heroPortraitWrap=$('.hero-portrait-wrap');
 const timelineList=$('.experience-list'), timelineProgress=$('#timelineProgress');
@@ -325,6 +436,10 @@ const onScroll=()=>{
     document.body.classList.toggle('scrolled',now>30);
     const scrollableHeight=document.documentElement.scrollHeight-window.innerHeight;
     document.documentElement.style.setProperty('--scroll-progress',`${scrollableHeight>0?now/scrollableHeight*100:0}%`);
+    const pNow=scrollableHeight>0?now/scrollableHeight:0;
+    if(railTrain){const tw=railTrain.offsetWidth||72;railTrain.style.insetInlineStart=(railLineStart+(railLineWidth-tw)*pNow)+'px';}
+    if(stationMeta.length) stationMeta.forEach(m=>m.el.classList.toggle('passed',pNow>=m.p-0.002));
+    updateRailDest(pNow);
     if(!reducedMotion){
       const heroH=innerHeight;
       if(now<heroH*1.2){
