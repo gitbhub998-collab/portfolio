@@ -3010,3 +3010,39 @@ html[lang=ar] .skill-top span { font-family: 'Cairo', 'IBM Plex Sans Arabic', sa
   .skills-grid { grid-template-columns: 1fr; gap: 16px; }
   .skills { margin-top: 40px; }
 }
+
+/* ===== v12: Arabic readability — Arabic script needs larger sizes than Latin mono ===== */
+html[lang=ar] .brand-word { font-size: 12.5px; }
+html[lang=ar] .top-meta strong { font-size: 13px; }
+html[lang=ar] .rail-dest { font-size: 12px; }
+html[lang=ar] .menu-panel-top span { font-size: 13px; }
+html[lang=ar] .menu-panel nav a em { font-size: 12px; }
+html[lang=ar] .menu-bottom > div > span,
+html[lang=ar] .menu-bottom a { font-size: 12.5px; }
+html[lang=ar] .eyebrow { font-size: 12.5px; }
+html[lang=ar] .hero-sub { font-size: 15px; }
+html[lang=ar] .hero-side-note { font-size: 12.5px; }
+html[lang=ar] .scroll-cue span { font-size: 12px; }
+html[lang=ar] .section-index,
+html[lang=ar] .section-kicker { font-size: 12.5px; }
+html[lang=ar] .service-body { font-size: 14.5px; }
+html[lang=ar] .about-text { font-size: 14.5px; }
+html[lang=ar] .about-facts div span { font-size: 12.5px; }
+html[lang=ar] .about-facts b { font-size: 13px; }
+html[lang=ar] .skills-title { font-size: 14.5px; }
+html[lang=ar] .skill-pct { font-size: 13.5px; }
+html[lang=ar] .journey-list article > span { font-size: 12px; }
+html[lang=ar] .journey-list article p { font-size: 13.5px; }
+html[lang=ar] .skill-row small { font-size: 13px; }
+html[lang=ar] .work-row small { font-size: 12px; }
+html[lang=ar] .request-eyebrow { font-size: 12px; }
+html[lang=ar] .request-intro { font-size: 13.5px; }
+html[lang=ar] .request-field label { font-size: 12px; }
+html[lang=ar] .contact-item small { font-size: 11.5px; }
+html[lang=ar] .footer-role { font-size: 13px; }
+
+@media (max-width: 900px) {
+  html[lang=ar] .hero-sub { font-size: 13.5px; }
+  html[lang=ar] .service-body { font-size: 14px; }
+  html[lang=ar] .about-text { font-size: 14px; }
+}
