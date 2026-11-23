@@ -2751,64 +2751,64 @@ html[dir=rtl] .request-field textarea {
   .page-wipe i { transition: none !important; }
 }
 
-/* ---- skills matrix ---- */
-.skills {
-  margin-top: 54px;
-}
-
+/* ---- Technical skills: railway equipment nameplates, not ratings. ---- */
+.skills { margin-top: 54px; }
+div.skills { margin-top: 64px; }
 .skills-title {
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   color: var(--amber-light);
-  font: 600 13px var(--mono);
-  letter-spacing: .22em;
+  font: 700 14px var(--mono);
+  letter-spacing: .18em;
 }
-
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px 44px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
-
-.skill-top {
+.skill {
+  position: relative;
+  isolation: isolate;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: center;
+  min-height: 138px;
+  padding: 28px;
+  background: linear-gradient(125deg, #1b3041, #0b1928 80%);
+  border: 1px solid rgb(223 193 138 / 30%);
+  border-inline-start: 3px solid var(--amber-light);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+  transition: background .25s, border-color .25s;
 }
-
-.skill-top span {
-  font: 600 15px var(--heading);
-  letter-spacing: .01em;
+.skill::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--amber-light);
+  clip-path: polygon(0 0, 100% 100%, 100% 0);
 }
-
-html[lang=ar] .skill-top span { font-family: var(--heading); }
-
-.skill-pct {
-  color: var(--amber-light);
-  font: 600 12.5px var(--mono);
+.skill span {
+  color: #f5f2e9;
+  font: 700 clamp(23px, 2.1vw, 30px)/1.2 var(--heading);
+  letter-spacing: -.025em;
 }
-
-.skill-track {
-  overflow: hidden;
-  height: 5px;
-  background: rgb(255 255 255 / 9%);
-  border-radius: 4px;
+.skill:hover { border-color: var(--amber-light); background: #1d3344; }
+html[dir=rtl] .skill {
+  clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px);
 }
-
-.skill-track i {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #9a6315, var(--amber-light));
-  border-radius: 4px;
-  transition: width 1.3s cubic-bezier(.25, .8, .25, 1);
+html[dir=rtl] .skill::after { transform: scaleX(-1); }
+html[lang=ar] .skill span { font-family: var(--heading); font-size: 28px; line-height: 1.45; letter-spacing: 0; }
+@media (max-width: 1000px) {
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-.skills.in .skill-track i { width: var(--lv); }
-
 @media (max-width: 760px) {
-  .skills-grid { grid-template-columns: 1fr; gap: 16px; }
   .skills { margin-top: 40px; }
+  div.skills { margin-top: 48px; }
+  .skills-grid { grid-template-columns: 1fr; gap: 12px; }
+  .skill { min-height: 84px; padding: 20px 24px; }
+  .skill span { font-size: 25px; }
+  html[lang=ar] .skill span { font-size: 26px; }
 }
 
 /* ===== v12: Arabic readability — Arabic script needs larger sizes than Latin mono ===== */
@@ -2829,7 +2829,6 @@ html[lang=ar] .about-text { font-size: 14.5px; }
 html[lang=ar] .about-facts div span { font-size: 12.5px; }
 html[lang=ar] .about-facts b { font-size: 13px; }
 html[lang=ar] .skills-title { font-size: 14.5px; }
-html[lang=ar] .skill-pct { font-size: 13.5px; }
 html[lang=ar] .journey-list article > span { font-size: 12px; }
 html[lang=ar] .journey-list article p { font-size: 13.5px; }
 html[lang=ar] .skill-row small { font-size: 13px; }

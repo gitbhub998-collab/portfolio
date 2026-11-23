@@ -299,15 +299,6 @@ document.addEventListener('click',e=>{
   },520);
 },true);
 
-/* ---------------- skills matrix fill ---------------- */
-const skillsEl=$('.skills');
-if(skillsEl){
-  const so=new IntersectionObserver(es=>{
-    es.forEach(en=>{if(en.isIntersecting){skillsEl.classList.add('in');so.disconnect();}});
-  },{threshold:.3});
-  so.observe(skillsEl);
-}
-
 /* ---------------- scroll effects: topbar, parallax, timeline ---------------- */
 const heroVideo=$('.hero-video'), heroPortraitWrap=$('.hero-portrait-wrap');
 const timelineList=$('.experience-list'), timelineProgress=$('#timelineProgress');
