@@ -10,9 +10,9 @@
   --muted: #6d716f;
   --amber: #b78a49;
   --amber-light: #dfc18a;
-  --mono: "Inter", Arial, sans-serif;
-  --heading: "Sora", "Inter", Arial, sans-serif;
-  --body: "Inter", Arial, sans-serif;
+  --mono: "DM Sans", Arial, sans-serif;
+  --heading: "Fraunces", Georgia, serif;
+  --body: "DM Sans", Arial, sans-serif;
   --ease: cubic-bezier(.2, .75, .25, 1);
 }
 
