@@ -139,50 +139,6 @@ function splitTitles(){
   });
 }
 
-/* ---------------- real loader ---------------- */
-document.body.classList.add('js-anim');
-const loader=$('#loader'), pct=$('#percent'), bar=$('#loading-bar');
-if(loader&&pct&&bar){
-  const heroVideo=$('.hero-video'), heroImg=$('.hero-portrait');
-  const tasks=[
-    new Promise(r=>{if(document.fonts&&document.fonts.ready){document.fonts.ready.then(r,r)}else r()}),
-    new Promise(r=>{
-      if(!heroVideo) return r();
-      if(heroVideo.readyState>=3) return r();
-      heroVideo.addEventListener('canplay',r,{once:true});
-      heroVideo.addEventListener('error',r,{once:true});
-    }),
-    new Promise(r=>{
-      if(!heroImg) return r();
-      if(heroImg.complete&&heroImg.naturalWidth>0) return r();
-      heroImg.addEventListener('load',r,{once:true});
-      heroImg.addEventListener('error',r,{once:true});
-    }),
-    new Promise(r=>{if(document.readyState==='complete')r();else window.addEventListener('load',r,{once:true})})
-  ];
-  let done=0, displayed=0, finished=false;
-  const setP=v=>{displayed=Math.min(Math.max(v,0),100);pct.textContent=Math.round(displayed)+'%';bar.style.width=displayed+'%';};
-  tasks.forEach(p=>p.then(()=>{done++;}));
-  const started=performance.now();
-  const tick=()=>{
-    if(finished) return;
-    const target=(done/tasks.length)*100;
-    setP(displayed+(target-displayed)*.14+ .6);
-    const elapsed=performance.now()-started;
-    if((done===tasks.length&&displayed>98&&elapsed>2100)||elapsed>4500){
-      finished=true;setP(100);
-      setTimeout(()=>{
-        loader.classList.add('is-hidden');
-        document.body.classList.add('ready');
-        setTimeout(()=>loader.remove(),500);
-      },180);
-      return;
-    }
-    requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-
 const currentYear=$('#currentYear');
 if(currentYear) currentYear.textContent=new Date().getFullYear();
 
@@ -360,32 +316,6 @@ function updateRailDest(p){
 window.addEventListener('load',buildRail);
 window.addEventListener('resize',buildRail);
 buildRail();
-
-/* ---------------- split-flap departure-board loader ---------------- */
-const flapBoard=$('#flapBoard');
-if(flapBoard){
-  const flapText='BELAL MOHAMED';
-  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  flapBoard.innerHTML='';
-  const cells=[];
-  for(const ch of flapText){
-    const d=document.createElement('span');
-    if(ch===' '){d.className='flap gap';d.innerHTML='&nbsp;';}
-    else{d.className='flap';d.textContent='A';}
-    flapBoard.appendChild(d);
-    cells.push({el:d,target:ch});
-  }
-  if(reducedMotion){
-    cells.forEach(c=>{if(c.target!==' ')c.el.textContent=c.target;});
-  }else{
-    cells.forEach((c,i)=>{
-      if(c.target===' ')return;
-      c.el.classList.add('flipping');
-      const cyc=setInterval(()=>{c.el.textContent=chars[Math.floor(Math.random()*26)];},55);
-      setTimeout(()=>{clearInterval(cyc);c.el.textContent=c.target;c.el.classList.remove('flipping');c.el.classList.add('landed');},500+i*110);
-    });
-  }
-}
 
 /* ---------------- page wipe transitions (menu navigation) ---------------- */
 const pageWipe=$('#pageWipe');

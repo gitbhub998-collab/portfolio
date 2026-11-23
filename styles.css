@@ -78,63 +78,39 @@ img {
   max-width: 100%;
 }
 
-#loader {
+/* Full-screen logo intro. Contain keeps the entire original video visible. */
+#logoIntro {
   position: fixed;
   z-index: 9999;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  background: var(--navy-deep);
-  color: var(--white);
-  transition: opacity .5s ease, visibility .5s ease;
+  display: none;
+  place-items: center;
+  background: #071525;
+  transition: opacity .45s ease, visibility .45s ease;
 }
-
-#loader.is-hidden {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
+#logoIntro.is-active { display: grid; }
+#logoIntro.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#introVideo { width: 100%; height: 100%; object-fit: contain; display: block; }
+#skipIntro {
+  position: absolute;
+  right: max(22px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid rgb(222 188 116 / 45%);
+  border-radius: 999px;
+  background: rgb(7 21 37 / 85%);
+  color: #f2dfb8;
+  font: 500 14px/1.4 'Cairo', sans-serif;
+  cursor: pointer;
 }
-
-.loader-brand {
-  font: 700 clamp(38px, 8vw, 64px)/1 var(--heading);
-  letter-spacing: -.07em;
+#skipIntro span { margin-inline-start: 12px; }
+#skipIntro:hover, #skipIntro:focus-visible { border-color: #f2dfb8; outline: 2px solid #f2dfb8; outline-offset: 4px; }
+html.intro-active, html.intro-active body { overflow: hidden; overscroll-behavior: none; }
+@media (max-width: 560px) {
+  #skipIntro { right: 50%; transform: translateX(50%); white-space: nowrap; bottom: max(28px, env(safe-area-inset-bottom)); }
 }
-
-.loader-brand::after {
-  display: block;
-  width: 28px;
-  height: 3px;
-  margin: 12px auto 0;
-  background: var(--amber);
-  content: "";
-}
-
-.loading-label {
-  color: #bac5d1;
-  font: 10px var(--mono);
-  letter-spacing: .16em;
-}
-
-.loading-label span {
-  color: var(--amber-light);
-}
-
-.loading-track {
-  width: 170px;
-  height: 2px;
-  overflow: hidden;
-  background: rgb(255 255 255 / 16%);
-}
-
-.loading-track i {
-  display: block;
-  width: 0;
-  height: 100%;
-  background: var(--amber);
-}
+@media (prefers-reduced-motion: reduce) { #logoIntro { transition: none; } }
 
 .topbar {
   position: fixed;
@@ -2854,72 +2830,6 @@ html[dir=rtl] .rail-train svg { transform: scaleX(-1); }
 @media (max-width: 560px) {
   .rail-station { width: 6px; height: 6px; margin-inline-start: -3px; }
   .rail-train { width: 40px; height: 14px; bottom: 12px; }
-}
-
-/* ---- split-flap departure-board loader ---- */
-.flap-board {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  max-width: 90vw;
-}
-
-.flap {
-  position: relative;
-  display: inline-flex;
-  overflow: hidden;
-  width: clamp(26px, 5.4vw, 44px);
-  height: clamp(38px, 7.6vw, 62px);
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, #1c2c42 0%, #16243a 49%, #101d31 51%, #142238 100%);
-  border: 1px solid rgb(255 255 255 / 9%);
-  border-radius: 5px;
-  box-shadow: inset 0 2px 3px rgb(255 255 255 / 6%), inset 0 -3px 5px rgb(0 0 0 / 45%), 0 4px 10px rgb(0 0 0 / 35%);
-  color: #f3f6fa;
-  font: 700 clamp(20px, 4.2vw, 36px)/1 var(--mono);
-  text-transform: uppercase;
-}
-
-.flap::after {
-  position: absolute;
-  inset: 50% 0 auto;
-  height: 1px;
-  background: rgb(0 0 0 / 55%);
-  content: "";
-}
-
-.flap.gap {
-  width: clamp(10px, 2.4vw, 18px);
-  background: none;
-  border: none;
-  box-shadow: none;
-}
-
-.flap.gap::after { display: none; }
-
-.flap.flipping { animation: flapFlip .12s linear infinite; }
-
-@keyframes flapFlip {
-  0% { transform: rotateX(0deg); }
-  50% { transform: rotateX(-72deg); filter: brightness(.55); }
-  100% { transform: rotateX(0deg); }
-}
-
-.flap.landed {
-  color: var(--amber-light);
-  animation: flapLand .28s ease-out 1;
-}
-
-@keyframes flapLand {
-  0% { transform: rotateX(-80deg); filter: brightness(.5); }
-  60% { transform: rotateX(12deg); }
-  100% { transform: rotateX(0deg); filter: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flap.flipping, .flap.landed { animation: none; }
 }
 
 /* ---- page wipe transitions ---- */
