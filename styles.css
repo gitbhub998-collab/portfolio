@@ -2753,7 +2753,20 @@ html[dir=rtl] .request-field textarea {
 
 /* ---- Technical skills: railway equipment nameplates, not ratings. ---- */
 .skills { margin-top: 54px; }
-div.skills { margin-top: 64px; }
+div.skills {
+  margin-top: 64px;
+  position: relative;
+  isolation: isolate;
+  padding: 30px 0;
+}
+div.skills::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(clamp(22px, 6vw, 88px) * -1);
+  z-index: -1;
+  background: #25272a;
+}
+div.skills .skill { background: linear-gradient(125deg, #414448, #2c2f33 80%); }
 .skills-title {
   margin: 0 0 24px;
   color: var(--amber-light);
