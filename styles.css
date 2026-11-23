@@ -2703,7 +2703,9 @@ html[dir=rtl] .request-field textarea {
   background: rgb(8 18 29 / 55%);
 }
 .topbar .brand { justify-self: start; width: auto; outline: none; }
-.topbar .brand:focus-visible { outline: 2px solid var(--amber-light); outline-offset: 6px; }
+.topbar .brand:focus { outline: none; }
+.topbar .brand:focus-visible { outline: none; box-shadow: 0 2px 0 rgb(255 255 255 / 65%); }
+.topbar .brand-mark { border: 0; }
 .topbar .top-meta { margin: 0; align-items: center; gap: 24px; }
 .topbar .top-actions { justify-self: end; gap: 12px; }
 .topbar::after { display: block; height: 2px; }
