@@ -91,26 +91,7 @@ img {
 #logoIntro.is-active { display: grid; }
 #logoIntro.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 #introVideo { width: 100%; height: 100%; object-fit: contain; display: block; }
-@media (orientation: portrait) { #introVideo { object-fit: cover; } }
-#skipIntro {
-  position: absolute;
-  right: max(22px, env(safe-area-inset-right));
-  bottom: max(24px, env(safe-area-inset-bottom));
-  min-height: 48px;
-  padding: 12px 18px;
-  border: 1px solid rgb(222 188 116 / 45%);
-  border-radius: 999px;
-  background: rgb(7 21 37 / 85%);
-  color: #f2dfb8;
-  font: 500 14px/1.4 'Cairo', sans-serif;
-  cursor: pointer;
-}
-#skipIntro span { margin-inline-start: 12px; }
-#skipIntro:hover, #skipIntro:focus-visible { border-color: #f2dfb8; outline: 2px solid #f2dfb8; outline-offset: 4px; }
 html.intro-active, html.intro-active body { overflow: hidden; overscroll-behavior: none; }
-@media (max-width: 560px) {
-  #skipIntro { right: 50%; transform: translateX(50%); white-space: nowrap; bottom: max(28px, env(safe-area-inset-bottom)); }
-}
 @media (prefers-reduced-motion: reduce) { #logoIntro { transition: none; } }
 
 .topbar {

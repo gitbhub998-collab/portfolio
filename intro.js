@@ -2,8 +2,7 @@
 (() => {
   const intro = document.getElementById('logoIntro');
   const video = document.getElementById('introVideo');
-  const skip = document.getElementById('skipIntro');
-  if (!intro || !video || !skip) { document.body.classList.add('ready'); return; }
+  if (!intro || !video) { document.body.classList.add('ready'); return; }
   let finished = false;
   let startupTimer, stallTimer, deadline;
   const page = [...document.body.children].filter(el => el !== intro && !['SCRIPT', 'NOSCRIPT'].includes(el.tagName));
@@ -30,15 +29,15 @@
   }
   function onKey(event) {
     if (event.key === 'Escape') finish();
-    if (event.key === 'Tab') { event.preventDefault(); skip.focus(); }
+    if (event.key === 'Tab') event.preventDefault();
   }
-  skip.addEventListener('click', finish);
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData) { finish(); return; }
   document.body.classList.add('js-anim');
   intro.classList.add('is-active');
   document.documentElement.classList.add('intro-active');
   page.forEach(el => { el.inert = true; });
-  skip.focus({ preventScroll: true });
+  intro.tabIndex = -1;
+  intro.focus({ preventScroll: true });
   document.addEventListener('keydown', onKey);
   document.addEventListener('wheel', preventScroll, { passive: false });
   document.addEventListener('touchmove', preventScroll, { passive: false });
@@ -51,8 +50,7 @@
   startupTimer = setTimeout(finish, 5000);
   deadline = setTimeout(finish, 18000);
   video.muted = true;
-  const portrait = window.matchMedia('(orientation: portrait)').matches;
-  video.src = portrait ? '/logo-intro-sparkle-portrait.mp4' : '/logo-intro-sparkle.mp4';
+  video.src = '/logo-intro-sparkle.mp4';
   const playback = video.play();
   if (playback?.catch) playback.catch(finish);
 })();
