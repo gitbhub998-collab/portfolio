@@ -144,6 +144,7 @@ if(currentYear) currentYear.textContent=new Date().getFullYear();
 /* ---------------- Lenis smooth scroll ---------------- */
 const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let lenis=null;
+const headerScrollOffset=()=>Math.ceil(document.querySelector(".topbar").getBoundingClientRect().height)+16;
 if(window.Lenis&&!reducedMotion){
   lenis=new Lenis({duration:1.15,smoothWheel:true});
   window.__lenis=lenis;
@@ -159,7 +160,7 @@ $$('a[href^="#"]').forEach(a=>{
     if(!target) return;
     e.preventDefault();
     if(window.__wipeNav) return;
-    if(lenis) lenis.scrollTo(target,{offset:-70});
+    if(lenis) lenis.scrollTo(target,{offset:-headerScrollOffset()});
     else target.scrollIntoView({behavior:reducedMotion?'auto':'smooth'});
   });
 });
@@ -285,11 +286,11 @@ document.addEventListener('click',e=>{
   setMenuState(false);
   pageWipe.classList.add('active','in');
   setTimeout(()=>{
-    if(lenis) lenis.scrollTo(target,{offset:-70,immediate:true});
+    if(lenis) lenis.scrollTo(target,{offset:-headerScrollOffset(),immediate:true});
     else{
       const de=document.documentElement, prevB=de.style.scrollBehavior;
       de.style.scrollBehavior='auto';
-      window.scrollTo(0,target.getBoundingClientRect().top+window.scrollY-70);
+      window.scrollTo(0,target.getBoundingClientRect().top+window.scrollY-headerScrollOffset());
       de.style.scrollBehavior=prevB;
     }
     pageWipe.classList.remove('in');

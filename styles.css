@@ -23,7 +23,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
+  scroll-padding-top: 98px;
 }
 
 body {
@@ -1466,7 +1466,7 @@ body.scrolled .topbar {
 
 @media (max-width: 760px) {
   html {
-    scroll-padding-top: 72px;
+    scroll-padding-top: 86px;
   }
 
   .topbar {
@@ -2851,4 +2851,13 @@ html[lang=ar] .footer-role { font-size: 13px; }
   html[lang=ar] .hero-sub { font-size: 13.5px; }
   html[lang=ar] .service-body { font-size: 14px; }
   html[lang=ar] .about-text { font-size: 14px; }
+}
+
+/* Keep hero content clear of the fixed header, including short mobile viewports. */
+@media (max-width: 760px) {
+  .hero { padding-top: 100px; min-height: max(820px, 100svh); }
+  .hero-copy { transform: none; }
+}
+@media (min-width: 761px) and (max-height: 780px) {
+  .hero-portrait { transform: translateY(-20px); }
 }
