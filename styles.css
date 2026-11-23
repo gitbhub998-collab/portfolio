@@ -91,6 +91,7 @@ img {
 #logoIntro.is-active { display: grid; }
 #logoIntro.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 #introVideo { width: 100%; height: 100%; object-fit: contain; display: block; }
+@media (orientation: portrait) { #introVideo { object-fit: cover; } }
 #skipIntro {
   position: absolute;
   right: max(22px, env(safe-area-inset-right));
