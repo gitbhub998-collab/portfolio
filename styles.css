@@ -2702,117 +2702,32 @@ html[dir=rtl] .request-field textarea {
 .request-submit { font-size: 11.5px; }
 .loading-label { font-size: 11.5px; }
 
-/* ---- railbar: station-line scroll progress ---- */
-.topbar::after { display: none; }
-
-.railbar {
-  position: absolute;
-  z-index: 1;
-  inset: auto 0 0;
-  height: 34px;
-  pointer-events: none;
+/* Header: clear logo, role, and navigation columns. */
+.topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(22px, 3vw, 48px);
+  padding-inline: clamp(20px, 4.5vw, 72px);
+  border-bottom: 1px solid rgb(241 195 109 / 16%);
+  background: rgb(8 18 29 / 55%);
 }
-
-.topbar .brand,
-.topbar .top-meta,
-.topbar .top-actions {
-  position: relative;
-  z-index: 2;
+.topbar .brand { justify-self: start; width: auto; outline: none; }
+.topbar .brand:focus-visible { outline: 2px solid var(--amber-light); outline-offset: 6px; }
+.topbar .top-meta { margin: 0; align-items: center; gap: 24px; }
+.topbar .top-actions { justify-self: end; gap: 12px; }
+.topbar::after { display: block; height: 2px; }
+@media (max-width: 1000px) {
+  .topbar { grid-template-columns: minmax(0, 1fr) auto; }
 }
-
-.rail-line {
-  position: absolute;
-  inset-inline: 14px;
-  inset-inline-start: 250px;
-  inset-inline-end: 230px;
-  bottom: 8px;
-  height: 2px;
-  background: rgb(200 137 26 / 55%);
-  border-radius: 2px;
+@media (max-width: 760px) {
+  .topbar { padding-inline: 18px; gap: 18px; }
+  .topbar .brand-word { display: block; font-size: 10px; letter-spacing: .07em; }
+  .topbar .brand { gap: 9px; }
+  .topbar .top-actions { gap: 10px; }
+  .topbar .lang-toggle { height: 44px; min-width: 44px; padding-inline: 12px; }
+  html[lang=ar] .topbar .brand-word { font-size: 11px; }
 }
-
-.rail-line::before {
-  position: absolute;
-  inset: -3px 0 auto;
-  height: 1px;
-  background: rgb(200 137 26 / 25%);
-  content: "";
-}
-
-.rail-stations {
-  position: absolute;
-  inset-inline: 14px;
-  inset-inline-start: 250px;
-  inset-inline-end: 230px;
-  bottom: 0;
-  height: 100%;
-}
-
-@media (max-width: 1199px) {
-  .rail-line,
-  .rail-stations { inset-inline-start: 14px; inset-inline-end: 175px; }
-}
-
-.rail-station {
-  position: absolute;
-  bottom: 5px;
-  width: 8px;
-  height: 8px;
-  margin-inline-start: -4px;
-  background: var(--white);
-  border: 1.5px solid rgb(200 137 26 / 85%);
-  border-radius: 50%;
-  transition: background .3s ease, box-shadow .3s ease;
-}
-
-.rail-station.passed {
-  background: var(--amber);
-  box-shadow: 0 0 8px rgb(200 137 26 / 65%);
-}
-
-.rail-dest {
-  position: absolute;
-  top: -25px;
-  left: 50%;
-  color: var(--amber-light);
-  font: 600 10.5px var(--mono);
-  letter-spacing: .16em;
-  white-space: nowrap;
-  text-shadow: 0 1px 4px rgb(0 0 0 / 65%);
-  transform: translateX(-50%);
-}
-
-.rail-train {
-  position: absolute;
-  bottom: 11px;
-  inset-inline-start: 14px;
-  width: 72px;
-  height: 24px;
-  filter: drop-shadow(0 3px 5px rgb(0 0 0 / 45%));
-  transition: none;
-  will-change: inset-inline-start;
-}
-
-.rail-train svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-html[dir=rtl] .rail-train svg { transform: scaleX(-1); }
-
-/* railbar over light topbar state stays fine: topbar is dark/translucent */
-@media (max-width: 900px) {
-  .rail-line,
-  .rail-stations { inset-inline-start: 78px; inset-inline-end: 150px; }
-  .rail-dest { display: none; }
-  .rail-train { width: 52px; height: 18px; bottom: 12px; }
-  .railbar { height: 28px; }
-}
-@media (max-width: 560px) {
-  .rail-station { width: 6px; height: 6px; margin-inline-start: -3px; }
-  .rail-train { width: 40px; height: 14px; bottom: 12px; }
-}
+@media (max-width: 350px) { .topbar .brand-word { display: none; } }
 
 /* ---- page wipe transitions ---- */
 .page-wipe {
@@ -2906,7 +2821,6 @@ html[lang=ar] .skill-top span { font-family: 'Cairo', 'IBM Plex Sans Arabic', sa
 /* ===== v12: Arabic readability — Arabic script needs larger sizes than Latin mono ===== */
 html[lang=ar] .brand-word { font-size: 12.5px; }
 html[lang=ar] .top-meta strong { font-size: 13px; }
-html[lang=ar] .rail-dest { font-size: 12px; }
 html[lang=ar] .menu-panel-top span { font-size: 13px; }
 html[lang=ar] .menu-panel nav a em { font-size: 12px; }
 html[lang=ar] .menu-bottom > div > span,

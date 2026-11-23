@@ -124,7 +124,6 @@ function applyLang(next){
   if(lt) lt.textContent=ar?'EN':'عربي';
   document.body.classList.toggle('ar',ar);
   splitTitles();
-  if(window.__rail)window.__rail.relabel();
 }
 
 /* ---------------- split-text display titles ---------------- */
@@ -272,51 +271,6 @@ $$('.reveal').forEach((el,i)=>{el.style.transitionDelay=Math.min((i%5)*55,220)+'
 $$('.hero .anim').forEach(el=>{/* delays set via nth CSS */});
 
 
-/* ---------------- railbar: station-line progress ---------------- */
-const railStations=$('#railStations'), railTrain=$('#railTrain'), railLine=$('.rail-line');
-let railLineStart=14, railLineWidth=0;
-function measureRailLine(){
-  if(!railLine) return;
-  railLineStart=parseFloat(getComputedStyle(railLine).insetInlineStart)||14;
-  railLineWidth=railLine.offsetWidth;
-}
-const railIds=['home','services','about','experience','work','journey','contact'];
-let stationMeta=[];
-function buildRail(){
-  if(!railStations) return;
-  const scrollable=document.documentElement.scrollHeight-window.innerHeight;
-  measureRailLine();
-  railStations.innerHTML='';
-  stationMeta=[];
-  railIds.forEach(id=>{
-    const sec=document.getElementById(id);
-    if(!sec) return;
-    const p=scrollable>0?Math.min(Math.max((sec.offsetTop-60)/scrollable,0),1):0;
-    const d=document.createElement('i');
-    d.className='rail-station';
-    d.style.insetInlineStart=(p*100).toFixed(2)+'%';
-    railStations.appendChild(d);
-    stationMeta.push({el:d,p:p,id:id});
-  });
-}
-const railbarEl=$('.railbar');
-let railDest=$('#railDest');
-if(railbarEl&&!railDest){railDest=document.createElement('div');railDest.className='rail-dest';railDest.id='railDest';railbarEl.appendChild(railDest);}
-window.__rail={relabel:()=>{stationMeta.forEach(m=>{const sp=m.el.querySelector('span');if(sp)sp.textContent=tr('rail.'+m.id);});updateRailDest(lastP);}};
-let lastP=0;
-function updateRailDest(p){
-  if(!railDest||!stationMeta.length) return;
-  lastP=p;
-  let dest=null;
-  for(const m of stationMeta){if(m.p>p+0.002){dest=m;break;}}
-  railDest.textContent=dest
-    ?tr('rail.next')+' \u00b7 '+tr('rail.'+dest.id)
-    :tr('rail.final')+' \u00b7 '+tr('rail.'+stationMeta[stationMeta.length-1].id);
-}
-window.addEventListener('load',buildRail);
-window.addEventListener('resize',buildRail);
-buildRail();
-
 /* ---------------- page wipe transitions (menu navigation) ---------------- */
 const pageWipe=$('#pageWipe');
 document.addEventListener('click',e=>{
@@ -366,10 +320,6 @@ const onScroll=()=>{
     document.body.classList.toggle('scrolled',now>30);
     const scrollableHeight=document.documentElement.scrollHeight-window.innerHeight;
     document.documentElement.style.setProperty('--scroll-progress',`${scrollableHeight>0?now/scrollableHeight*100:0}%`);
-    const pNow=scrollableHeight>0?now/scrollableHeight:0;
-    if(railTrain){const tw=railTrain.offsetWidth||72;railTrain.style.insetInlineStart=(railLineStart+(railLineWidth-tw)*pNow)+'px';}
-    if(stationMeta.length) stationMeta.forEach(m=>m.el.classList.toggle('passed',pNow>=m.p-0.002));
-    updateRailDest(pNow);
     if(!reducedMotion){
       const heroH=innerHeight;
       if(now<heroH*1.2){
