@@ -83,7 +83,7 @@ img {
   position: fixed;
   z-index: 9999;
   inset: 0;
-  display: none;
+  display: grid;
   place-items: center;
   background: #071525;
   transition: opacity .45s ease, visibility .45s ease;

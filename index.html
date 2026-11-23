@@ -3,6 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+/* Critical intro shell exists before the first body paint or external download. */
+#logoIntro{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#071525;animation:introFailsafe 0s 20s forwards}
+#introVideo{display:block;width:100%;height:100%;object-fit:contain}
+#logoIntro.is-active{animation:none}
+#logoIntro.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes introFailsafe{to{visibility:hidden;pointer-events:none}}
+</style>
+<script>
+window.__introBootTimer=setTimeout(function(){
+  window.__introBootExpired=true;
+  var intro=document.getElementById('logoIntro');
+  if(intro)intro.remove();
+  document.documentElement.classList.remove('intro-active');
+  if(document.body)document.body.classList.add('ready');
+},8000);
+</script>
 <title>Belal Mohamed — Railway Technology Engineer</title>
 <meta name="description" content="Belal Mohamed is a fourth-year Railway Technology student at 6th of October Technological University, with practical railway and industrial experience.">
 <link rel="canonical" href="https://belal-mohamed14.vercel.app/">
@@ -25,7 +42,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles.css?v=15">
+<link rel="stylesheet" href="/styles.css?v=16">
 </head>
 <body>
 <div id="logoIntro" role="dialog" aria-modal="true" aria-label="Logo introduction" data-lenis-prevent>
@@ -300,6 +317,6 @@
 <div class="page-wipe" id="pageWipe" aria-hidden="true"><i class="pw-a"></i><i class="pw-b"></i></div>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>
 <script src="/script.js?v=4"></script>
-<script src="/intro.js?v=3"></script>
+<script src="/intro.js?v=4"></script>
 </body>
 </html>

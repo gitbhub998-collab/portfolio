@@ -1,5 +1,7 @@
 /* The logo video is optional: every exit path returns to the unchanged site. */
 (() => {
+  clearTimeout(window.__introBootTimer);
+  if (window.__introBootExpired) { document.getElementById('logoIntro')?.remove(); document.body.classList.add('ready'); return; }
   const intro = document.getElementById('logoIntro');
   const video = document.getElementById('introVideo');
   if (!intro || !video) { document.body.classList.add('ready'); return; }
