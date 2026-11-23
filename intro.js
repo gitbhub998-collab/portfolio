@@ -51,7 +51,8 @@
   startupTimer = setTimeout(finish, 5000);
   deadline = setTimeout(finish, 18000);
   video.muted = true;
-  video.src = '/logo-intro-sparkle.mp4';
+  const portrait = window.matchMedia('(orientation: portrait)').matches;
+  video.src = portrait ? '/logo-intro-sparkle-portrait.mp4' : '/logo-intro-sparkle.mp4';
   const playback = video.play();
   if (playback?.catch) playback.catch(finish);
 })();
