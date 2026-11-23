@@ -308,7 +308,7 @@ if(skillsEl){
   so.observe(skillsEl);
 }
 
-/* ---------------- scroll effects: topbar, progress, parallax, timeline ---------------- */
+/* ---------------- scroll effects: topbar, parallax, timeline ---------------- */
 const heroVideo=$('.hero-video'), heroPortraitWrap=$('.hero-portrait-wrap');
 const timelineList=$('.experience-list'), timelineProgress=$('#timelineProgress');
 let ticking=false;
@@ -319,8 +319,6 @@ const onScroll=()=>{
     ticking=false;
     const now=window.scrollY;
     document.body.classList.toggle('scrolled',now>30);
-    const scrollableHeight=document.documentElement.scrollHeight-window.innerHeight;
-    document.documentElement.style.setProperty('--scroll-progress',`${scrollableHeight>0?now/scrollableHeight*100:0}%`);
     if(!reducedMotion){
       const heroH=innerHeight;
       if(now<heroH*1.2){
